@@ -44,7 +44,7 @@
             background-color: #218838;
         }
 
-        /* Table */
+        
         table {
             width: 100%;
             border-collapse: collapse;
@@ -97,10 +97,10 @@
     <div class="container">
         <h2>Students List</h2>
 
-        <!-- Add New Student Button -->
-        <a href="<?= site_url('students/create') ?>" class="add-button">➕ Add New Student</a>
+       
+        <a href="<?= site_url('students/create_new') ?>" class="add-button">➕ Add New Student</a>
 
-        <!-- Students Table -->
+       
         <table>
             <tr>
                 <th>ID</th>
