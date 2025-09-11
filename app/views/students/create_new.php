@@ -9,7 +9,7 @@
 
 <body>
     <h2>Add a new student</h2>
-    <form action="<?= site_url('/students/create'); ?>" method="post">
+<form action="<?= site_url('/students/create_new'); ?>" method="post">
         <label for="first_name">First Name:</label>
         <input type="text" name="first_name" required>
         <label for="last_name">Last Name:</label>
