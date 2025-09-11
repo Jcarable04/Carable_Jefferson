@@ -79,7 +79,8 @@ class Config {
 			}
 			else
 			{
-				$base_url = 'http://localhost/';
+				$config['base_url'] = 'https://carable-jefferson.onrender.com/';
+
 			}
 			$this->set('base_url', $base_url);
 		}
