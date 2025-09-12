@@ -34,7 +34,7 @@ class StudentsController extends Controller
             ];
 
             $this->StudentsModel->insert($data);
-             echo "<p>Student created successfully!</p> <a href='" . site_url('students/get-all') . "'>View Data</a>";
+             echo "<p>Student created successfully!</p> <a href='" . site_url('/') . "'>View Data</a>";
         }else {
             $this->call->view('students/create_new');
         }
@@ -54,7 +54,7 @@ class StudentsController extends Controller
                 ];
 
             $this->StudentsModel->update($id, $newdata);
-            echo "<p>Updated successfully!</p> <a href='" . site_url('students/get-all') . "'>View Data</a>";
+            echo "<p>Updated successfully!</p> <a href='" . site_url('/') . "'>View Data</a>";
         }else {
             $data = $this->StudentsModel->find($id);
             $this->call->view('students/update_student', $data);
@@ -63,6 +63,6 @@ class StudentsController extends Controller
     public function delete($id)
     {
         $this->StudentsModel->delete($id);
-        echo "<p>Deleted successfully!</p> <a href='" . base_url() . "students/get-all" . "'>View Data</a>";
+        echo "<p>Deleted successfully!</p> <a href='" . base_url() . "/" . "'>View Data</a>";
     }
 }
