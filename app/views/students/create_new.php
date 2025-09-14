@@ -10,11 +10,13 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             min-height: 100vh;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            justify-content: flex-start;
             align-items: center;
             margin: o;
             background: linear-gradient(135deg, #bda0ddff, #c2d6f8ff);
             color: #fff;
+            padding-top: 40px;
         }
         .form-container{
             background: rgba(255, 255, 255, o.1);
@@ -25,17 +27,19 @@
             color: #fff;
             width: 100%;
             text-align: center;
+            
         }
         h2{
-            
+            align-items: center;
             margin-bottom: 1.5rem;
             font-size: 24px;
             color: #444;
         }
         label{
             display: block;
-            text-align: left;
+            text-align: center;
             margin: 0.1.5rem 0 0.2rem;
+            margin-top: 20px;
             font-size: 16px;
             font-weight: 600;
             background: linear-gradient(90deg, #ff6a00, #ee0979);
