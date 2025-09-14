@@ -8,69 +8,54 @@
     <style>
         body{
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            min-height: 100vh;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             margin: o;
-            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            background: linear-gradient(135deg, #bda0ddff, #c2d6f8ff);
             color: #fff;
         }
         .form-container{
             background: rgb(255, 255, 255, o.1);
-            padding: 2rem;
-            border-radius: 1rem;
+            padding: 30px;
+            border-radius: 20px;
             backdrop-filter: blur(10px);
-            box-shadow: 0 8px 25px rgb(0, 0, 0, 0.3);
-            width: 100%;
-            max-width: 400px;
+            box-shadow: 0 8px 20px rgb(0, 0, 0, 0.2);
+            color: #fff;
+            width: 320px;
+            text-align: center;
         }
         h2{
-            text-align: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 24px;
+            font-size: 24px;
+            color: #444;
         }
         label{
             display: block;
-            margin: 0.5rem 0 0.2rem;
-            font-weight: 600;
+            text-align: left;
+            margin-bottom: 5px
+            font-weight: 14px;
         }
-        input[type="text"],
-        input[type="email"]{
+        inputt{
             width: 100%;
-            padding: 0.75rem;
+            padding: 10px;
             border: none;
-            border-radius: 0.5rem;
-            margin-bottom: 1rem;
-            font-size: 1rem;
+            border-radius: 10px;
+            margin-bottom: 15px;
         }
         input[type="submit"]{
-            width: 100%;
-            padding: 0.75rem;
-            border: none;
-            border-radius: 0.5rem;
-            background: linear-gradient(135deg, #ff512f, #dd2476);
-            color: white;
-            font-size: 1rem;
+            background: linear-gradient(90degeg, #ff6a00, #ee0979);
+            color: #fff;
+            font-size: 16px;
             font-weight: bold;
             cursor: pointer;
-            transition: 0.3s ease;
+            transition: 0.3s;
         }
         input[type="submit"]:hover{
+            background: linear-gradient(90deg, #ee0979 #ff6a00);
             transform: scale(1.05);
-            background: linear-gradient(135deg, #dd2476, #ff512f);
-        }
-        .back-link{
-          display: block;
-          text-align: center;
-          margin-top: 1rem;
-          color: #fff;
-          text-decoration: none;
-          font-weight: bold;  
-        }
-        .back-link:hover{
-            text-decoration: underline;
-        }
-        
+        }    
     </style>
 </head>
 
