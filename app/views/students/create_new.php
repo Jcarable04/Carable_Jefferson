@@ -11,7 +11,7 @@
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: flex-start;
+            align-items: center;
             margin: o;
             background: linear-gradient(135deg, #bda0ddff, #c2d6f8ff);
             color: #fff;
@@ -27,6 +27,7 @@
             text-align: center;
         }
         h2{
+            align-items: flex-start;
             margin-bottom: 1.5rem;
             font-size: 24px;
             color: #444;
