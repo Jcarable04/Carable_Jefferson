@@ -8,7 +8,7 @@
     <style>
         body{
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: flex-start;
@@ -17,47 +17,47 @@
             color: #fff;
         }
         .form-container{
-            background: rgb(255, 255, 255, o.1);
-            padding: 30px;
-            border-radius: 20px;
+            background: rgba(255, 255, 255, o.1);
+            padding: 2rem;
+            border-radius: 1rem;
             backdrop-filter: blur(10px);
-            box-shadow: 0 8px 20px rgb(0, 0, 0, 0.2);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
             color: #fff;
-            width: 320px;
+            width: 100%;
             text-align: center;
         }
         h2{
-            margin-bottom: 24px;
+            margin-bottom: 1.5rem;
             font-size: 24px;
             color: #444;
         }
         label{
             display: block;
             text-align: left;
-            margin-bottom: 6px;
+            margin: 0.1.5rem 0 0.2rem;
             font-size: 16px;
             font-weight: 600;
             background: linear-gradient(90deg, #ff6a00, #ee0979);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        inputt{
+        input{
             width: 100%;
-            padding: 10px;
+            padding: 0.75rem;
             border: none;
-            border-radius: 10px;
-            margin-bottom: 15px;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
         }
         input[type="submit"]{
             display: block;
             width: 100%;
             margin-top: 16px;
-            padding: 12px;
+            padding: 0.0.75rem;
             border: none;
-            border-radius: 8px;
+            border-radius: 0.5rem;
             background: linear-gradient(90deg, #4facfe, #00f2fe);
             color: white;
-            font-size: 16px;
+            font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
             transition: 0.3s ease;
