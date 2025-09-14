@@ -11,7 +11,7 @@
             height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             margin: o;
             background: linear-gradient(135deg, #bda0ddff, #c2d6f8ff);
             color: #fff;
@@ -34,8 +34,12 @@
         label{
             display: block;
             text-align: left;
-            margin-bottom: 5px
-            font-weight: 14px;
+            margin-bottom: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            background: linear-gradient(90deg, #ff6a00, #ee0979);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         inputt{
             width: 100%;
@@ -45,15 +49,21 @@
             margin-bottom: 15px;
         }
         input[type="submit"]{
-            background: linear-gradient(90degeg, #ff6a00, #ee0979);
-            color: #fff;
+            display: block;
+            width: 100%;
+            margin-top: 16px;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+            color: white;
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
-            transition: 0.3s;
+            transition: 0.3s ease;
         }
         input[type="submit"]:hover{
-            background: linear-gradient(90deg, #ee0979 #ff6a00);
+            background: linear-gradient(90deg, #00f2fe #4facfe);
             transform: scale(1.05);
         }    
     </style>
