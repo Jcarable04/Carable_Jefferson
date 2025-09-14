@@ -27,7 +27,7 @@
             text-align: center;
         }
         h2{
-            align-items: flex-start;
+            
             margin-bottom: 1.5rem;
             font-size: 24px;
             color: #444;
