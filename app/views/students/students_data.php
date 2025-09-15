@@ -1,105 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Students</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background-color: #bbd9eeff , #c376d6ff;
-            color: #333;
+        * {
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 50%, #ff6ec4 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 80%, rgba(255, 110, 196, 0.4) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(106, 17, 203, 0.4) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 40%, rgba(37, 117, 252, 0.3) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
         }
 
         .container {
-            max-width: 900px;
-            margin: auto;
-            background: #fff;
-            padding: 25px 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         h2 {
             text-align: center;
-            margin-bottom: 20px;
-            color: #4a4a4a;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #ffffff 0%, #ff6ec4 50%, #6a11cb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.6);
         }
 
         .add-button {
             display: inline-block;
-            background-color: #28a745;
+            margin-bottom: 1.5rem;
+            padding: 0.8rem 1.2rem;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #2575fc, #6a11cb);
             color: #fff;
-            padding: 10px 18px;
-            border-radius: 8px;
+            font-weight: 600;
             text-decoration: none;
-            font-weight: bold;
-            transition: background 0.2s ease;
-            margin-bottom: 20px;
+            transition: 0.3s;
         }
 
         .add-button:hover {
-            background-color: #218838;
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.4);
         }
 
-        
         table {
             width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 10px;
+            border-collapse: separate;
+            border-spacing: 0 16px;
         }
 
-        table th, table td {
-            padding: 12px 15px;
-            border-bottom: 1px solid #ddd;
+        th {
+            padding: 1rem;
             text-align: left;
+            font-weight: 600;
+            color: #fff;
+            text-transform: uppercase;
+            font-size: 1rem;
         }
 
-        table th {
-            background-color: #f1f1f1;
+        tr {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(14px);
+            border-radius: 16px;
+            transition: 0.3s;
         }
 
-        table tr:hover {
-            background-color: #f9f9f9;
+        tr:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 10px 30px rgba(255, 110, 196, 0.4);
         }
 
-        /* Action Buttons */
+        td {
+            padding: 1rem;
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        td:first-child {
+            font-weight: 700;
+            color: #ff6ec4;
+        }
+
         .btn {
-            padding: 6px 12px;
-            border-radius: 6px;
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+            border: none;
+            color: #fff;
+            font-weight: 600;
             text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            margin-right: 5px;
-            transition: 0.2s ease;
+            cursor: pointer;
+            transition: 0.3s;
         }
 
         .btn-update {
-            background: #007bff;
-            color: #fff;
-        }
-        .btn-update:hover {
-            background: #0056b3;
+            background: linear-gradient(135deg, #2575fc, #6a11cb);
         }
 
         .btn-delete {
-            background: #dc3545;
-            color: #fff;
+            background: linear-gradient(135deg, #ff6ec4, #ff512f);
         }
-        .btn-delete:hover {
-            background: #b52a37;
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.4);
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h2>Students List</h2>
 
-       
         <a href="<?= site_url('students/create_new') ?>" class="add-button">➕ Add New Student</a>
 
-       
         <table>
             <tr>
                 <th>ID</th>
@@ -124,4 +162,5 @@
         </table>
     </div>
 </body>
+
 </html>
