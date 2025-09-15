@@ -46,6 +46,12 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
             width: 100%;
             max-width: 500px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-container:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 15px 50px rgba(255, 110, 196, 0.4);
         }
 
         .form-container h2 {
@@ -81,12 +87,14 @@
             color: #fff;
             backdrop-filter: blur(12px);
             transition: 0.3s;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
         }
 
         input[type="text"]:focus,
         input[type="email"]:focus {
             background: rgba(255, 255, 255, 0.35);
-            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+            box-shadow: 0 6px 25px rgba(255, 110, 196, 0.4);
+            transform: translateY(-2px) scale(1.02);
         }
 
         input[type="submit"] {
@@ -99,11 +107,12 @@
             background: linear-gradient(135deg, #2575fc, #6a11cb);
             color: #fff;
             transition: 0.3s;
+            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2);
         }
 
         input[type="submit"]:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 10px 35px rgba(255, 110, 196, 0.4);
         }
     </style>
 </head>
