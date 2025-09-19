@@ -7,7 +7,11 @@
     <title>Students</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         body {
             font-family: 'Poppins', sans-serif;
@@ -18,15 +22,22 @@
 
         body::before {
             content: '';
-            position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background: radial-gradient(circle at 20% 80%, rgba(255, 110, 196, 0.4) 0%, transparent 50%),
                         radial-gradient(circle at 80% 20%, rgba(106, 17, 203, 0.4) 0%, transparent 50%),
                         radial-gradient(circle at 40% 40%, rgba(37, 117, 252, 0.3) 0%, transparent 50%);
-            pointer-events: none; z-index: -1;
+            pointer-events: none;
+            z-index: -1;
         }
 
-        .container { max-width: 1200px; margin: 0 auto; }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
         h2 {
             text-align: center;
@@ -39,16 +50,9 @@
             text-shadow: 0 0 30px rgba(255, 255, 255, 0.6);
         }
 
-        .top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
         .add-button {
+            display: inline-block;
+            margin-bottom: 1.5rem;
             padding: 0.8rem 1.2rem;
             border-radius: 12px;
             background: linear-gradient(135deg, #2575fc, #6a11cb);
@@ -58,18 +62,17 @@
             transition: 0.3s;
         }
 
-        .add-button:hover { transform: scale(1.05); box-shadow: 0 8px 25px rgba(255, 255, 255, 0.4); }
-
-        .search-box input {
-            padding: 0.7rem 1rem;
-            border-radius: 12px;
-            border: none;
-            outline: none;
-            font-size: 1rem;
-            width: 250px;
+        .add-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.4);
         }
 
-        table { width: 100%; border-collapse: separate; border-spacing: 0 16px; }
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 16px;
+        }
+
         th {
             padding: 1rem;
             text-align: left;
@@ -78,17 +81,32 @@
             text-transform: uppercase;
             font-size: 1rem;
         }
+
         tr {
             background: rgba(255, 255, 255, 0.25);
             backdrop-filter: blur(14px);
             border-radius: 16px;
             transition: 0.3s;
         }
-        tr:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 10px 30px rgba(255, 110, 196, 0.4); }
-        td { padding: 1rem; color: #fff; font-size: 1rem; }
-        td:first-child { font-weight: 700; color: #ff6ec4; }
+
+        tr:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 10px 30px rgba(255, 110, 196, 0.4);
+        }
+
+        td {
+            padding: 1rem;
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        td:first-child {
+            font-weight: 700;
+            color: #ff6ec4;
+        }
 
         .btn {
+            display: inline-block;
             padding: 0.5rem 1rem;
             border-radius: 12px;
             border: none;
@@ -98,37 +116,18 @@
             cursor: pointer;
             transition: 0.3s;
         }
-        .btn-update { background: linear-gradient(135deg, #2575fc, #6a11cb); }
-        .btn-delete { background: linear-gradient(135deg, #ff6ec4, #ff512f); }
-        .btn:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(255, 255, 255, 0.4); }
 
-        .pagination {
-            margin-top: 2rem;
-            display: flex;
-            justify-content: center;
-            gap: 0.6rem;
-            flex-wrap: wrap;
-        }
-        .pagination a {
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            text-decoration: none;
-            background: rgba(255, 255, 255, 0.25);
-            color: #fff;
-            transition: 0.3s;
-        }
-        .pagination a:hover, .pagination a.active {
+        .btn-update {
             background: linear-gradient(135deg, #2575fc, #6a11cb);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
         }
 
-        .no-data {
-            text-align: center;
-            color: #fff;
-            font-weight: 600;
-            padding: 2rem;
-            background: rgba(0,0,0,0.1);
-            border-radius: 12px;
+        .btn-delete {
+            background: linear-gradient(135deg, #ff6ec4, #ff512f);
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.4);
         }
     </style>
 </head>
@@ -137,41 +136,18 @@
     <div class="container">
         <h2>Students List</h2>
 
-        <div class="top-bar">
-            <a href="<?= site_url('students/create_new') ?>" class="add-button">➕ Add New Student</a>
-            <form method="get" action="" class="search-box">
-                <input type="text" name="keyword" placeholder="🔍 Search..." value="<?= isset($_GET['keyword']) ? htmlspecialchars($_GET['keyword']) : '' ?>">
-            </form>
-        </div>
+        <a href="<?= site_url('students/create_new') ?>" class="add-button">➕ Add New Student</a>
 
-        <?php
-        $keyword = isset($_GET['keyword']) ? strtolower($_GET['keyword']) : '';
-        $filtered = [];
-        foreach ($data as $student) {
-            if ($keyword === '' || 
-                strpos(strtolower($student['first_name']), $keyword) !== false ||
-                strpos(strtolower($student['last_name']), $keyword) !== false ||
-                strpos(strtolower($student['email']), $keyword) !== false) {
-                $filtered[] = $student;
-            }
-        }
-
-        $perPage = 5;
-        $total = count($filtered);
-        $pages = ceil($total / $perPage);
-        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-        if ($page < 1) $page = 1;
-        if ($page > $pages) $page = $pages;
-        $start = ($page - 1) * $perPage;
-        $paginated = array_slice($filtered, $start, $perPage);
-        ?>
-
-        <?php if ($total > 0): ?>
         <table>
             <tr>
-                <th>ID</th><th>First Name</th><th>Last Name</th><th>Email</th><th>Actions</th>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Actions</th>
             </tr>
-            <?php foreach ($paginated as $student): ?>
+
+            <?php foreach ($data as $student): ?>
                 <tr>
                     <td><?= $student['id'] ?></td>
                     <td><?= $student['first_name'] ?></td>
@@ -184,24 +160,7 @@
                 </tr>
             <?php endforeach; ?>
         </table>
-
-        <div class="pagination">
-            <?php if ($page > 1): ?>
-                <a href="?page=<?= $page-1 ?>&keyword=<?= urlencode($keyword) ?>">Prev</a>
-            <?php endif; ?>
-
-            <?php for ($i = max(1, $page-1); $i <= min($pages, $page+1); $i++): ?>
-                <a href="?page=<?= $i ?>&keyword=<?= urlencode($keyword) ?>" class="<?= $i == $page ? 'active' : '' ?>"><?= $i ?></a>
-            <?php endfor; ?>
-
-            <?php if ($page < $pages): ?>
-                <a href="?page=<?= $page+1 ?>&keyword=<?= urlencode($keyword) ?>">Next</a>
-            <?php endif; ?>
-        </div>
-
-        <?php else: ?>
-            <div class="no-data">No results found.</div>
-        <?php endif; ?>
     </div>
 </body>
+
 </html>
