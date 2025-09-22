@@ -14,7 +14,7 @@ class StudentsController extends Controller
         $this->call->database();
         $this->call->model('StudentsModel');
     }
-   public function get_all()
+   public function index()
 {
     // Current page
     $page = isset($_GET['page']) && !empty($_GET['page']) ? $this->io->get('page') : 1;
