@@ -134,33 +134,43 @@
 
 <body>
     <div class="container">
-        <h2>Students List</h2>
+    <h2>Students List</h2>
 
-        <a href="<?= site_url('students/create_new') ?>" class="add-button">➕ Add New Student</a>
+    <form action="<?= site_url('students') ?>" method="get" class="mb-3" style="text-align:right;">
+        <input type="text" name="q" placeholder="Search" value="<?= isset($_GET['q']) ? $_GET['q'] : '' ?>" style="padding:0.5rem; border-radius:8px;">
+        <button type="submit" style="padding:0.5rem 1rem; border-radius:8px; background:#2575fc; color:white;">Search</button>
+    </form>
 
-        <table>
+    <a href="<?= site_url('students/create_new') ?>" class="add-button">➕ Add New Student</a>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
+
+        <?php foreach ($students as $student): ?>
             <tr>
-                <th>ID</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Email</th>
-                <th>Actions</th>
+                <td><?= $student['id'] ?></td>
+                <td><?= $student['first_name'] ?></td>
+                <td><?= $student['last_name'] ?></td>
+                <td><?= $student['email'] ?></td>
+                <td>
+                    <a href="<?= site_url('students/update/') . $student['id'] ?>" class="btn btn-update">✏ Update</a>
+                    <a href="<?= site_url('students/delete/') . $student['id'] ?>" class="btn btn-delete">🗑 Delete</a>
+                </td>
             </tr>
+        <?php endforeach; ?>
+    </table>
 
-            <?php foreach ($data as $student): ?>
-                <tr>
-                    <td><?= $student['id'] ?></td>
-                    <td><?= $student['first_name'] ?></td>
-                    <td><?= $student['last_name'] ?></td>
-                    <td><?= $student['email'] ?></td>
-                    <td>
-                        <a href="<?= site_url('students/update/') . $student['id'] ?>" class="btn btn-update">✏ Update</a>
-                        <a href="<?= site_url('students/delete/') . $student['id'] ?>" class="btn btn-delete">🗑 Delete</a>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        </table>
+    <div class="mt-3">
+        <?= $page; // pagination links ?>
     </div>
+</div>
+
 </body>
 
 </html>
