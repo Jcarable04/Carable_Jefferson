@@ -46,15 +46,8 @@
             text-decoration: none;
             transition: 0.3s;
         }
-        .add-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.4);
-        }
-        table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0 16px;
-        }
+        .add-button:hover { transform: scale(1.05); box-shadow: 0 8px 25px rgba(255, 255, 255, 0.4); }
+        table { width: 100%; border-collapse: separate; border-spacing: 0 16px; }
         th {
             padding: 1rem;
             text-align: left;
@@ -69,15 +62,8 @@
             border-radius: 16px;
             transition: 0.3s;
         }
-        tr:hover {
-            transform: translateY(-4px) scale(1.02);
-            box-shadow: 0 10px 30px rgba(255, 110, 196, 0.4);
-        }
-        td {
-            padding: 1rem;
-            color: #fff;
-            font-size: 1rem;
-        }
+        tr:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 10px 30px rgba(255, 110, 196, 0.4); }
+        td { padding: 1rem; color: #fff; font-size: 1rem; }
         td:first-child { font-weight: 700; color: #ff6ec4; }
         .btn {
             display: inline-block;
@@ -92,11 +78,7 @@
         }
         .btn-update { background: linear-gradient(135deg, #2575fc, #6a11cb); }
         .btn-delete { background: linear-gradient(135deg, #ff6ec4, #ff512f); }
-        .btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.4);
-        }
-        /* Pagination Styles */
+        .btn:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(255, 255, 255, 0.4); }
         .pagination-wrapper { margin-top: 2rem; text-align: center; }
         .pagination-wrapper ul { list-style: none; display: inline-flex; padding: 0; }
         .pagination-wrapper li { margin: 0 5px; }
@@ -109,14 +91,8 @@
             text-decoration: none;
             transition: 0.3s;
         }
-        .pagination-wrapper a:hover {
-            background: #ffffff33;
-        }
-        .pagination-wrapper .active a {
-            background: #ff6ec4;
-            font-weight: 700;
-        }
-        /* Search Form */
+        .pagination-wrapper a:hover { background: #ffffff33; }
+        .pagination-wrapper .active a { background: #ff6ec4; font-weight: 700; }
         .search-form { text-align: right; margin-bottom: 1rem; }
         .search-form input[type="text"] {
             padding: 0.5rem 1rem;
@@ -134,13 +110,44 @@
             transition: 0.3s;
         }
         .search-form button:hover { background: #6a11cb; }
+
+        /* Auth forms */
+        .auth-forms { display:flex; gap:30px; margin-top:40px; flex-wrap: wrap; }
+        .auth-box {
+            flex:1;
+            background: rgba(255,255,255,0.9);
+            padding:20px;
+            border-radius:14px;
+            min-width: 280px;
+        }
+        .auth-box h3 { text-align:center; margin-bottom:15px; color:#333; }
+        .auth-box input, .auth-box select {
+            width:100%; padding:10px; margin:8px 0;
+            border:1px solid #ddd; border-radius:8px;
+        }
+        .auth-box button {
+            width:100%; padding:10px;
+            background:#2575fc; color:#fff;
+            border:none; border-radius:8px;
+            font-weight:600;
+        }
+        .alert { padding:10px 14px; border-radius:8px; margin-bottom:12px; }
+        .alert-success { background:#e6ffef; color:#067a3f; border:1px solid #b8f0d0; }
+        .alert-danger  { background:#ffecec; color:#b30000; border:1px solid #f5c2c2; }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>Students List</h2>
 
-        <a href="<?= site_url('students/create_new') ?>" class="add-button">➕ Add New Student</a>
+        <?php if($this->session->userdata('logged_in')): ?>
+            <a href="<?= site_url('students/create_new') ?>" class="add-button">➕ Add New Student</a>
+        <?php endif; ?>
+
+        <!-- Flash message -->
+        <?php if($this->session->flashdata('alert')): ?>
+            <div class="alert alert-success"><?= $this->session->flashdata('alert') ?></div>
+        <?php endif; ?>
 
         <!-- Search Form -->
         <form method="get" class="search-form">
@@ -148,6 +155,7 @@
             <button type="submit">Search</button>
         </form>
 
+        <!-- Students Table -->
         <table>
             <tr>
                 <th>ID</th>
@@ -156,17 +164,18 @@
                 <th>Email</th>
                 <th>Actions</th>
             </tr>
-
-            <?php if (!empty($students) && is_array($students)): ?>
-                <?php foreach ($students as $student): ?>
+            <?php if(!empty($students) && is_array($students)): ?>
+                <?php foreach($students as $student): ?>
                     <tr>
                         <td><?= $student['id'] ?></td>
                         <td><?= $student['first_name'] ?></td>
                         <td><?= $student['last_name'] ?></td>
                         <td><?= $student['email'] ?></td>
                         <td>
-                            <a href="<?= site_url('students/update/') . $student['id'] ?>" class="btn btn-update">✏ Update</a>
-                            <a href="<?= site_url('students/delete/') . $student['id'] ?>" class="btn btn-delete">🗑 Delete</a>
+                            <?php if($this->session->userdata('logged_in')): ?>
+                                <a href="<?= site_url('students/update/'.$student['id']) ?>" class="btn btn-update">✏ Update</a>
+                                <a href="<?= site_url('students/delete/'.$student['id']) ?>" class="btn btn-delete">🗑 Delete</a>
+                            <?php endif; ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -176,9 +185,40 @@
         </table>
 
         <!-- Pagination -->
-        <div class="pagination-wrapper">
-            <?= $page ?>
+        <div class="pagination-wrapper"><?= $page ?></div>
+
+        <!-- Login + Register Forms -->
+        <?php if(!$this->session->userdata('logged_in')): ?>
+        <div class="auth-forms">
+            <!-- Login -->
+            <div class="auth-box">
+                <h3>Login</h3>
+                <form method="post" action="<?= site_url('students/login_process') ?>">
+                    <input type="email" name="email" placeholder="Email" required>
+                    <input type="password" name="password" placeholder="Password" required>
+                    <button type="submit">Login</button>
+                </form>
+            </div>
+
+            <!-- Register -->
+            <div class="auth-box">
+                <h3>Register</h3>
+                <form method="post" action="<?= site_url('students/register_process') ?>">
+                    <input type="text" name="firstname" placeholder="First name" required>
+                    <input type="text" name="lastname" placeholder="Last name" required>
+                    <input type="email" name="email" placeholder="Email" required>
+                    <input type="password" name="password" placeholder="Password (min 6 chars)" required>
+                    <select name="role">
+                        <option value="student" selected>Student</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                    <button type="submit">Create account</button>
+                </form>
+            </div>
         </div>
+        <?php else: ?>
+            <a href="<?= site_url('students/logout') ?>" class="add-button">🚪 Logout</a>
+        <?php endif; ?>
     </div>
 </body>
 </html>
