@@ -9,23 +9,24 @@ class StudentsController extends Controller
         $this->call->database();
         $this->call->model('StudentsModel');
 
-        // load libraries
-        $this->call->library('session');
+        // Load libraries
+        $this->call->library('session');    
         $this->call->library('form_validation');
+        $this->call->library('pagination');
     }
 
-    // === index with search + pagination ===
+    // === Index with search + pagination ===
     public function index()
     {
         $page = isset($_GET['page']) && !empty($_GET['page']) ? $this->io->get('page') : 1;
         $q = isset($_GET['q']) && !empty($_GET['q']) ? trim($this->io->get('q')) : '';
         $records_per_page = 10;
 
-        $this->call->library('pagination');
         $students = $this->StudentsModel->page($q, $records_per_page, $page);
-        $data['students'] = $students['records'];
-        $total_rows = $students['total_rows'];
 
+        $data['students'] = $students['records'];
+
+        $total_rows = $students['total_rows'];
         $this->pagination->set_options([
             'first_link' => '⏮ First',
             'last_link'  => 'Last ⏭',
@@ -33,10 +34,16 @@ class StudentsController extends Controller
             'prev_link'  => '← Prev',
             'page_delimiter' => '&page='
         ]);
-
         $this->pagination->set_theme('bootstrap');
         $this->pagination->initialize($total_rows, $records_per_page, $page, 'students?q=' . $q);
         $data['page'] = $this->pagination->paginate();
+
+        // Pass flash messages and login status
+        $flash = $this->session->userdata('flash') ?? null;
+        $data['flash'] = $flash;
+        if ($flash) $this->session->unset_userdata('flash');
+
+        $data['logged_in'] = $this->session->userdata('logged_in') ?? false;
 
         $this->call->view('students/students_data', $data);
     }
@@ -50,9 +57,9 @@ class StudentsController extends Controller
                 'last_name'  => $this->io->post('last_name'),
                 'email'      => $this->io->post('email')
             ];
-
             $this->StudentsModel->insert($data);
-            echo "<p>Student created successfully!</p> <a href='" . site_url('/') . "'>View Data</a>";
+            $this->session->set_flashdata('flash', ['type' => 'success', 'message' => 'Student created successfully!']);
+            redirect('students');
         } else {
             $this->call->view('students/create_new');
         }
@@ -66,9 +73,9 @@ class StudentsController extends Controller
                 'last_name' => $this->io->post('last_name'),
                 'email'     => $this->io->post('email')
             ];
-
             $this->StudentsModel->update($id, $newdata);
-            echo "<p>Updated successfully!</p> <a href='" . site_url('/') . "'>View Data</a>";
+            $this->session->set_flashdata('flash', ['type' => 'success', 'message' => 'Student updated successfully!']);
+            redirect('students');
         } else {
             $data = $this->StudentsModel->find($id);
             $this->call->view('students/update_student', $data);
@@ -78,7 +85,8 @@ class StudentsController extends Controller
     public function delete($id)
     {
         $this->StudentsModel->delete($id);
-        echo "<p>Deleted successfully!</p> <a href='" . base_url() . "/" . "'>View Data</a>";
+        $this->session->set_flashdata('flash', ['type' => 'success', 'message' => 'Student deleted successfully!']);
+        redirect('students');
     }
 
     // === AUTH ===
@@ -98,7 +106,6 @@ class StudentsController extends Controller
         if ($this->form_validation->run()) {
             $email = $this->io->post('email');
             $password = $this->io->post('password');
-
             $student = $this->StudentsModel->findByEmail($email);
 
             if ($student && isset($student['password']) && password_verify($password, $student['password'])) {
@@ -106,10 +113,10 @@ class StudentsController extends Controller
                 $this->session->set_userdata('student_id', $student['id']);
                 $this->session->set_userdata('role', $student['role'] ?? 'student');
 
-                $this->session->set_flashdata('alert', 'Welcome back, ' . $student['first_name'] . '!');
+                $this->session->set_flashdata('flash', ['type' => 'success', 'message' => 'Welcome back, ' . $student['first_name'] . '!']);
                 redirect('students');
             } else {
-                $this->session->set_flashdata('alert', 'Invalid email or password');
+                $this->session->set_flashdata('flash', ['type' => 'danger', 'message' => 'Invalid email or password']);
                 redirect('students/login');
             }
         } else {
@@ -140,7 +147,7 @@ class StudentsController extends Controller
             ];
 
             $this->StudentsModel->insert($data);
-            $this->session->set_flashdata('alert', 'Registration successful. Please login.');
+            $this->session->set_flashdata('flash', ['type' => 'success', 'message' => 'Registration successful. Please login.']);
             redirect('students/login');
         } else {
             $this->call->view('students/register');
@@ -152,7 +159,7 @@ class StudentsController extends Controller
         $this->session->unset_userdata('logged_in');
         $this->session->unset_userdata('student_id');
         $this->session->unset_userdata('role');
-        $this->session->set_flashdata('alert', 'You have been logged out.');
+        $this->session->set_flashdata('flash', ['type' => 'success', 'message' => 'You have been logged out.']);
         redirect('students/login');
     }
 }
