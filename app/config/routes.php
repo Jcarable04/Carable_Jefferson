@@ -43,18 +43,8 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 |
 */
 
-
-$router->get('/', 'StudentsController::index');
-$router->get('/students', 'StudentsController::index');
-
-// Auth
-$router->get('/students/login', 'StudentsController::login');
-$router->post('/students/login_process', 'StudentsController::login_process');
-$router->get('/students/register', 'StudentsController::register');
-$router->post('/students/register_process', 'StudentsController::register_process');
-$router->get('/students/logout', 'StudentsController::logout');
-
-// CRUD
-$router->match('/students/create_new', 'StudentsController::create', ['GET','POST']);
-$router->match('/students/update/{id}', 'StudentsController::update', ['GET','POST']);
+$router->get('/', 'StudentsController::index'); // homepage with list, search, pagination
+$router->get('/students', 'StudentsController::index'); // optional, same as above
+$router->match('/students/create_new', 'StudentsController::create', ['GET', 'POST']);
+$router->match('/students/update/{id}', 'StudentsController::update', ['GET', 'POST']);
 $router->get('/students/delete/{id}', 'StudentsController::delete');

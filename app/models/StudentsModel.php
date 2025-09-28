@@ -32,9 +32,5 @@ class StudentsModel extends Model {
 
     return ['records' => $records, 'total_rows' => $total_rows];
 }
-public function findByEmail($email) {
-        return $this->db->table($this->table)
-                        ->where('email', $email)
-                        ->get();
-}
+
 }
