@@ -1,11 +1,6 @@
 <?php
 defined('PREVENT_DIRECT_ACCESS') or exit('No direct script access allowed');
 
-/**
- * Controller: StudentsController
- * 
- * Automatically generated via CLI.
- */
 class StudentsController extends Controller
 {
     public function __construct()
@@ -13,47 +8,106 @@ class StudentsController extends Controller
         parent::__construct();
         $this->call->database();
         $this->call->model('StudentsModel');
+        $this->call->library('session');
     }
-   public function index()
-{
-    // Current page
-    $page = isset($_GET['page']) && !empty($_GET['page']) ? $this->io->get('page') : 1;
 
-    // Search query
-    $q = isset($_GET['q']) && !empty($_GET['q']) ? trim($this->io->get('q')) : '';
+    // ✅ AUTH GUARD
+    private function requireLogin()
+    {
+        if (!$this->session->has_userdata('student_id')) {
+            redirect('students/login');
+            exit;
+        }
+    }
 
-    $records_per_page = 10;
+    // ✅ LOGIN
+    public function login()
+    {
+        if ($this->io->method() === 'post') {
+            $lname = $this->io->post('last_name');
+            $fname = $this->io->post('first_name');
+            $password = $this->io->post('password');
 
-    // Load pagination library
-    $this->call->library('pagination');
+            $student = $this->StudentsModel->getByName($lname, $fname);
 
-    // Get paginated data
-    $students = $this->StudentsModel->page($q, $records_per_page, $page);
+            if ($student && password_verify($password, $student['password'])) {
+                $this->session->set_userdata('student_id', $student['id']);
+                $this->session->set_userdata('student_name', $student['first_name'] . ' ' . $student['last_name']);
+                $this->session->set_userdata('role', $student['role']);
+                redirect('students');
+            } else {
+                $data['error'] = "Invalid credentials!";
+                $this->call->view('students/login', $data);
+            }
+        } else {
+            $this->call->view('students/login');
+        }
+    }
 
-    $data['students'] = $students['records'];
+    // ✅ REGISTER
+    public function register()
+    {
+        if ($this->io->method() === 'post') {
+            $fname = $this->io->post('first_name');
+            $lname = $this->io->post('last_name');
+            $email = $this->io->post('email');
+            $password = password_hash($this->io->post('password'), PASSWORD_DEFAULT);
+            $role = $this->io->post('role');
 
-    $total_rows = $students['total_rows'];
+            $this->StudentsModel->insert([
+                'first_name' => $fname,
+                'last_name'  => $lname,
+                'email'      => $email,
+                'password'   => $password,
+                'role'       => $role
+            ]);
 
-    // Pagination settings
-    $this->pagination->set_options([
-        'first_link' => '⏮ First',
-        'last_link'  => 'Last ⏭',
-        'next_link'  => 'Next →',
-        'prev_link'  => '← Prev',
-        'page_delimiter' => '&page='
-    ]);
+            echo "<p>Registered successfully!</p> <a href='" . site_url('students/login') . "'>Login</a>";
+        } else {
+            $this->call->view('students/register');
+        }
+    }
 
-    $this->pagination->set_theme('bootstrap');
-    $this->pagination->initialize($total_rows, $records_per_page, $page, 'students?q=' . $q);
+    // ✅ LOGOUT
+    public function logout()
+    {
+        $this->session->sess_destroy();
+        redirect('students/login');
+    }
 
-    $data['page'] = $this->pagination->paginate();
+    // ✅ CRUD (Protected)
+    public function index()
+    {
+        $this->requireLogin();
 
-    $this->call->view('students/students_data', $data);
-}
+        $page = isset($_GET['page']) && !empty($_GET['page']) ? $this->io->get('page') : 1;
+        $q = isset($_GET['q']) && !empty($_GET['q']) ? trim($this->io->get('q')) : '';
+        $records_per_page = 10;
+
+        $this->call->library('pagination');
+        $students = $this->StudentsModel->page($q, $records_per_page, $page);
+        $data['students'] = $students['records'];
+        $total_rows = $students['total_rows'];
+
+        $this->pagination->set_options([
+            'first_link' => '⏮ First',
+            'last_link'  => 'Last ⏭',
+            'next_link'  => 'Next →',
+            'prev_link'  => '← Prev',
+            'page_delimiter' => '&page='
+        ]);
+
+        $this->pagination->set_theme('bootstrap');
+        $this->pagination->initialize($total_rows, $records_per_page, $page, 'students?q=' . $q);
+
+        $data['page'] = $this->pagination->paginate();
+
+        $this->call->view('students/students_data', $data);
+    }
 
     public function create()
     {
-        
+        $this->requireLogin();
         if ($this->io->method() == 'post') {
             $fname = $this->io->post('first_name');
             $lname = $this->io->post('last_name');
@@ -66,34 +120,36 @@ class StudentsController extends Controller
             ];
 
             $this->StudentsModel->insert($data);
-             echo "<p>Student created successfully!</p> <a href='" . site_url('/') . "'>View Data</a>";
-        }else {
+            echo "<p>Student created successfully!</p> <a href='" . site_url('/') . "'>View Data</a>";
+        } else {
             $this->call->view('students/create_new');
         }
-
-
     }
+
     public function update($id)
     {
+        $this->requireLogin();
         if ($this->io->method() == 'post') {
             $fname = $this->io->post('first_name');
             $lname = $this->io->post('last_name');
             $email = $this->io->post('email');
             $newdata = [
-                'first_name'=> $fname,
-                'last_name'=> $lname,
-                'email' => $email
-                ];
+                'first_name' => $fname,
+                'last_name'  => $lname,
+                'email'      => $email
+            ];
 
             $this->StudentsModel->update($id, $newdata);
             echo "<p>Updated successfully!</p> <a href='" . site_url('/') . "'>View Data</a>";
-        }else {
+        } else {
             $data = $this->StudentsModel->find($id);
             $this->call->view('students/update_student', $data);
         }
     }
+
     public function delete($id)
     {
+        $this->requireLogin();
         $this->StudentsModel->delete($id);
         echo "<p>Deleted successfully!</p> <a href='" . base_url() . "/" . "'>View Data</a>";
     }

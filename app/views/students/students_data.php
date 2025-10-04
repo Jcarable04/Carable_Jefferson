@@ -1,3 +1,7 @@
+<?php 
+session_start(); 
+$is_logged_in = isset($_SESSION['user']); 
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,6 +38,25 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: 0 0 30px rgba(255, 255, 255, 0.6);
+        }
+        .topbar { text-align: right; margin-bottom: 1rem; }
+        .welcome { color: #fff; margin-right: 1rem; font-weight: 600; }
+        .logout-btn, .auth-btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: none;
+            color: #fff;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .logout-btn { background: linear-gradient(135deg, #ff6ec4, #ff512f); }
+        .auth-btn { background: linear-gradient(135deg, #2575fc, #6a11cb); }
+        .logout-btn:hover, .auth-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255,255,255,0.4);
         }
         .add-button {
             display: inline-block;
@@ -96,7 +119,6 @@
             transform: scale(1.05);
             box-shadow: 0 6px 20px rgba(255, 255, 255, 0.4);
         }
-        /* Pagination Styles */
         .pagination-wrapper { margin-top: 2rem; text-align: center; }
         .pagination-wrapper ul { list-style: none; display: inline-flex; padding: 0; }
         .pagination-wrapper li { margin: 0 5px; }
@@ -109,14 +131,11 @@
             text-decoration: none;
             transition: 0.3s;
         }
-        .pagination-wrapper a:hover {
-            background: #ffffff33;
-        }
+        .pagination-wrapper a:hover { background: #ffffff33; }
         .pagination-wrapper .active a {
             background: #ff6ec4;
             font-weight: 700;
         }
-        /* Search Form */
         .search-form { text-align: right; margin-bottom: 1rem; }
         .search-form input[type="text"] {
             padding: 0.5rem 1rem;
@@ -138,47 +157,65 @@
 </head>
 <body>
     <div class="container">
+
+        <!-- 🔹 AUTH TOP BAR -->
+        <div class="topbar">
+            <?php if ($is_logged_in): ?>
+                <span class="welcome">👋 Welcome, <?= htmlspecialchars($_SESSION['user']['first_name'].' '.$_SESSION['user']['last_name']); ?></span>
+                <a href="<?= site_url('students/logout') ?>" class="logout-btn">Logout</a>
+            <?php else: ?>
+                <a href="<?= site_url('students/login') ?>" class="auth-btn">Login</a>
+                <a href="<?= site_url('students/register') ?>" class="auth-btn">Register</a>
+            <?php endif; ?>
+        </div>
+
         <h2>Students List</h2>
 
-        <a href="<?= site_url('students/create_new') ?>" class="add-button">➕ Add New Student</a>
-
-        <!-- Search Form -->
+        <!-- 🔹 SEARCH BAR -->
         <form method="get" class="search-form">
             <input type="text" name="q" placeholder="Search..." value="<?= isset($_GET['q']) ? htmlspecialchars($_GET['q']) : '' ?>">
             <button type="submit">Search</button>
         </form>
 
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Email</th>
-                <th>Actions</th>
-            </tr>
+        <!-- 🔹 CRUD ACCESS ONLY WHEN LOGGED IN -->
+        <?php if ($is_logged_in): ?>
+            <a href="<?= site_url('students/create_new') ?>" class="add-button">➕ Add New Student</a>
 
-            <?php if (!empty($students) && is_array($students)): ?>
-                <?php foreach ($students as $student): ?>
-                    <tr>
-                        <td><?= $student['id'] ?></td>
-                        <td><?= $student['first_name'] ?></td>
-                        <td><?= $student['last_name'] ?></td>
-                        <td><?= $student['email'] ?></td>
-                        <td>
-                            <a href="<?= site_url('students/update/') . $student['id'] ?>" class="btn btn-update">✏ Update</a>
-                            <a href="<?= site_url('students/delete/') . $student['id'] ?>" class="btn btn-delete">🗑 Delete</a>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <tr><td colspan="5" style="text-align:center;">No records found.</td></tr>
-            <?php endif; ?>
-        </table>
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
 
-        <!-- Pagination -->
-        <div class="pagination-wrapper">
-            <?= $page ?>
-        </div>
+                <?php if (!empty($students) && is_array($students)): ?>
+                    <?php foreach ($students as $student): ?>
+                        <tr>
+                            <td><?= $student['id'] ?></td>
+                            <td><?= $student['first_name'] ?></td>
+                            <td><?= $student['last_name'] ?></td>
+                            <td><?= $student['email'] ?></td>
+                            <td>
+                                <a href="<?= site_url('students/update/') . $student['id'] ?>" class="btn btn-update">✏ Update</a>
+                                <a href="<?= site_url('students/delete/') . $student['id'] ?>" class="btn btn-delete">🗑 Delete</a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <tr><td colspan="5" style="text-align:center;">No records found.</td></tr>
+                <?php endif; ?>
+            </table>
+
+            <!-- PAGINATION -->
+            <div class="pagination-wrapper">
+                <?= $page ?>
+            </div>
+
+        <?php else: ?>
+            <p style="text-align:center; color:#fff; margin-top:2rem;">🔒 Please <a href="<?= site_url('students/login') ?>" style="color:#fff; text-decoration:underline;">login</a> to view and manage student records.</p>
+        <?php endif; ?>
     </div>
 </body>
 </html>
