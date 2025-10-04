@@ -161,7 +161,7 @@ $is_logged_in = isset($_SESSION['user']);
         <!-- 🔹 AUTH TOP BAR -->
         <div class="topbar">
             <?php if ($is_logged_in): ?>
-                <span class="welcome">👋 Welcome, <?= htmlspecialchars($_SESSION['user']['first_name'].' '.$_SESSION['user']['last_name']); ?></span>
+                <span class="welcome">👋 Welcome, <?= htmlspecialchars($_SESSION['student_name']); ?>!</span>
                 <a href="<?= site_url('students/logout') ?>" class="logout-btn">Logout</a>
             <?php else: ?>
                 <a href="<?= site_url('students/login') ?>" class="auth-btn">Login</a>
