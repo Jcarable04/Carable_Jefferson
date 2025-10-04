@@ -1,9 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Login</title>
-</head>
-<style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
         body {
             margin: 0;
             min-height: 100vh;
@@ -33,6 +36,12 @@
         }
 
         h2 { font-size: 26px; margin-bottom: 25px; font-weight: 600; }
+
+        .error {
+            color: #ff8080;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
 
         .input-group {
             position: relative;
@@ -104,21 +113,37 @@
             text-decoration: underline;
         }
     </style>
+</head>
+
 <body>
-    <h2>Student Login</h2>
-    <?php if (!empty($error)) echo "<p style='color:red;'>$error</p>"; ?>
-    <form method="POST" action="<?= site_url('students/login') ?>">
-        <label>Last Name:</label><br>
-        <input type="text" name="last_name" required><br><br>
+    <div class="card">
+        <h2>Student Login</h2>
 
-        <label>First Name:</label><br>
-        <input type="text" name="first_name" required><br><br>
+        <?php if (!empty($error)): ?>
+            <p class="error"><?= htmlspecialchars($error) ?></p>
+        <?php endif; ?>
 
-        <label>Password:</label><br>
-        <input type="password" name="password" required><br><br>
+        <form method="POST" action="<?= site_url('students/login') ?>">
+            <div class="input-group">
+                <input type="text" name="last_name" required placeholder=" ">
+                <label for="last_name">Last Name</label>
+            </div>
 
-        <button type="submit">Login</button>
-    </form>
-    <p>Don't have an account? <a href="<?= site_url('students/register') ?>">Register here</a></p>
+            <div class="input-group">
+                <input type="text" name="first_name" required placeholder=" ">
+                <label for="first_name">First Name</label>
+            </div>
+
+            <div class="input-group">
+                <input type="password" name="password" required placeholder=" ">
+                <label for="password">Password</label>
+            </div>
+
+            <button type="submit" class="btn">Login</button>
+
+            <a href="<?= site_url('students/register') ?>" class="link">Don't have an account? Register here</a>
+        </form>
+    </div>
 </body>
+
 </html>
