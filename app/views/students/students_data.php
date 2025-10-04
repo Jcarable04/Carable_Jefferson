@@ -1,6 +1,5 @@
-<?php 
-session_start(); 
-$is_logged_in = isset($_SESSION['user']); 
+<?php  
+$is_logged_in = isset($_SESSION['student_name']); 
 ?>
 <!DOCTYPE html>
 <html lang="en">
