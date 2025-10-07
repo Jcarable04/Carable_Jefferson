@@ -106,29 +106,46 @@ class StudentsController extends Controller
     }
 
     public function create()
-    {
-        $this->requireLogin();
-        if ($this->io->method() == 'post') {
-            $fname = $this->io->post('first_name');
-            $lname = $this->io->post('last_name');
-            $email = $this->io->post('email');
+{
+    $this->requireLogin();
 
-            $data = [
-                'first_name' => $fname,
-                'last_name' => $lname,
-                'email' => $email
-            ];
-
-            $this->StudentsModel->insert($data);
-            echo "<p>Student created successfully!</p> <a href='" . site_url('/') . "'>View Data</a>";
-        } else {
-            $this->call->view('students/create_new');
-        }
+    // ✅ Only admin can create new students
+    if ($_SESSION['role'] !== 'admin') {
+        echo "<p>⛔ Access Denied. Only admins can add students.</p> 
+              <a href='" . site_url('/students') . "'>Back to List</a>";
+        return;
     }
+
+    if ($this->io->method() == 'post') {
+        $fname = $this->io->post('first_name');
+        $lname = $this->io->post('last_name');
+        $email = $this->io->post('email');
+
+        $data = [
+            'first_name' => $fname,
+            'last_name'  => $lname,
+            'email'      => $email
+        ];
+
+        $this->StudentsModel->insert($data);
+
+        echo "<p>✅ Student created successfully!</p> 
+              <a href='" . site_url('/students') . "'>View Data</a>";
+    } else {
+        $this->call->view('students/create_new');
+    }
+}
+
 
     public function update($id)
     {
         $this->requireLogin();
+        if ($_SESSION['role'] !== 'admin') {
+        echo "<p>⛔ Access Denied. Only admins can update student records.</p> 
+              <a href='" . site_url('/students') . "'>Back to List</a>";
+        return;
+    }
+
         if ($this->io->method() == 'post') {
             $fname = $this->io->post('first_name');
             $lname = $this->io->post('last_name');
@@ -147,10 +164,19 @@ class StudentsController extends Controller
         }
     }
 
-    public function delete($id)
-    {
-        $this->requireLogin();
-        $this->StudentsModel->delete($id);
-        echo "<p>Deleted successfully!</p> <a href='" . base_url() . "/" . "'>View Data</a>";
+   public function delete($id)
+{
+    $this->requireLogin(); // make sure user is logged in
+
+    // ✅ Check if user is admin
+    if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+        echo "<p>⛔ Access denied. Only admins can delete records.</p>";
+        echo "<a href='" . site_url('/') . "'>Go back</a>";
+        exit;
     }
+
+    // ✅ Proceed with delete if admin
+    $this->StudentsModel->delete($id);
+    echo "<p>✅ Deleted successfully!</p> <a href='" . site_url('/') . "'>View Data</a>";
+}
 }

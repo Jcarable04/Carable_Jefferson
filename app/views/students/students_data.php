@@ -1,5 +1,6 @@
 <?php  
 $is_logged_in = isset($_SESSION['student_name']); 
+$role = $_SESSION['role'] ?? null; // ✅ get role if available
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -9,6 +10,7 @@ $is_logged_in = isset($_SESSION['student_name']);
     <title>Students</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
+        /* same your full style here unchanged */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Poppins', sans-serif;
@@ -176,9 +178,12 @@ $is_logged_in = isset($_SESSION['student_name']);
             <button type="submit">Search</button>
         </form>
 
-        <!-- 🔹 CRUD ACCESS ONLY WHEN LOGGED IN -->
+        <!-- 🔹 CRUD ACCESS -->
         <?php if ($is_logged_in): ?>
-            <a href="<?= site_url('students/create_new') ?>" class="add-button">➕ Add New Student</a>
+
+            <?php if ($role === 'admin'): ?>
+                <a href="<?= site_url('students/create_new') ?>" class="add-button">➕ Add New Student</a>
+            <?php endif; ?>
 
             <table>
                 <tr>
@@ -186,7 +191,9 @@ $is_logged_in = isset($_SESSION['student_name']);
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th>Email</th>
-                    <th>Actions</th>
+                    <?php if ($role === 'admin'): ?>
+                        <th>Actions</th>
+                    <?php endif; ?>
                 </tr>
 
                 <?php if (!empty($students) && is_array($students)): ?>
@@ -196,10 +203,12 @@ $is_logged_in = isset($_SESSION['student_name']);
                             <td><?= $student['first_name'] ?></td>
                             <td><?= $student['last_name'] ?></td>
                             <td><?= $student['email'] ?></td>
-                            <td>
-                                <a href="<?= site_url('students/update/') . $student['id'] ?>" class="btn btn-update">✏ Update</a>
-                                <a href="<?= site_url('students/delete/') . $student['id'] ?>" class="btn btn-delete">🗑 Delete</a>
-                            </td>
+                            <?php if ($role === 'admin'): ?>
+                                <td>
+                                    <a href="<?= site_url('students/update/') . $student['id'] ?>" class="btn btn-update">✏ Update</a>
+                                    <a href="<?= site_url('students/delete/') . $student['id'] ?>" class="btn btn-delete">🗑 Delete</a>
+                                </td>
+                            <?php endif; ?>
                         </tr>
                     <?php endforeach; ?>
                 <?php else: ?>
@@ -213,7 +222,9 @@ $is_logged_in = isset($_SESSION['student_name']);
             </div>
 
         <?php else: ?>
-            <p style="text-align:center; color:#fff; margin-top:2rem;">🔒 Please <a href="<?= site_url('students/login') ?>" style="color:#fff; text-decoration:underline;">login</a> to view and manage student records.</p>
+            <p style="text-align:center; color:#fff; margin-top:2rem;">
+                🔒 Please <a href="<?= site_url('students/login') ?>" style="color:#fff; text-decoration:underline;">login</a> to view and manage student records.
+            </p>
         <?php endif; ?>
     </div>
 </body>
